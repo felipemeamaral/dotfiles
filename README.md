@@ -2,7 +2,7 @@
 
 ### By using these dotfiles you'll be able to use a terminal like this one:
 
-![screenshot](/screenshot/screenvideo.mp4)
+![screenshot](/screenshot/screenshot.mp4)
 
 ### To install it you just have to copy the code down below and paste it on your terminal:
 

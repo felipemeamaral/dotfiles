@@ -1,0 +1,9 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+name = Felipe Amaral
+email = pulga.lipe@gmail.com
+[color]
+ui = auto
+[init]
+	defaultBranch = main

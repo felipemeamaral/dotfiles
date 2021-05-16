@@ -2,7 +2,7 @@
 
 ### By using these dotfiles you'll be able to use a terminal like this one:
 
-(https://github.com/felipemeamaral/dotfiles/raw/main/screenshot/screenshot.png)
+![screenshot](/screenshot/screenshot.png)
 
 ### To install it you just have to copy the code down below and paste it on your terminal:
 

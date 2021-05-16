@@ -23,7 +23,7 @@ install_brew() {
     if [ "$XCODE" == "y" ] || [ "$XCODE" == "Y" ]; then
       echo "Installing your most used tools and apps, please wait."
       brew install aria2 exa htop wget > /dev/null 2>&1
-      brew install --cask discord dropbox firefox-developer-edition font-open-sans keka lulu the-unarchiver telegram virtualhere vscodium > /dev/null 2>&1
+      brew install --cask discord dropbox firefox-developer-edition font-open-sans keka the-unarchiver telegram vscodium > /dev/null 2>&1
     fi
     
   elif [ "$(uname -s | cut -b 1-5)" == "Linux" ]; then
@@ -39,12 +39,16 @@ install_brew() {
 }
 
 install_nvm() {
-  echo "Installing nvm..."
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash > /dev/null 2>&1
+  if [ ! "$(command -v brew)" ]; then
+    echo "Installing nvm..."
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash > /dev/null 2>&1
+  else
+    echo "You already have nvm installed on your system."
+  fi
 }
 
 install_omz() {
-  echo "Removing old zsh files before installation."
+  echo "Removing old zsh and oh-my-zsh files before installation."
   rm -f "$HOME"/.zshrc* > /dev/null 2>&1
   rm -rf "$HOME"/.oh-my-zsh > /dev/null 2>&1
   rm -f "$HOME"~/.p10k.zsh > /dev/null 2>&1

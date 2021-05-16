@@ -39,7 +39,7 @@ install_brew() {
 }
 
 install_nvm() {
-  if [ ! "$(command -v brew)" ]; then
+  if [ ! "$(command -v nvm)" ]; then
     echo "Installing nvm..."
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash > /dev/null 2>&1
   else
@@ -48,16 +48,21 @@ install_nvm() {
 }
 
 install_omz() {
-  echo "Removing old zsh and oh-my-zsh files before installation."
-  rm -f "$HOME"/.zshrc* > /dev/null 2>&1
-  rm -rf "$HOME"/.oh-my-zsh > /dev/null 2>&1
-  rm -f "$HOME"~/.p10k.zsh > /dev/null 2>&1
-  
-  echo "Installing oh-my-zsh..."
-  git clone https://github.com/ohmyzsh/ohmyzsh.git "$HOME"/.oh-my-zsh > /dev/null 2>&1
+  if [ ! "$(command -v zsh)" ]; then
+    echo "You don't have zsh shell installed. Aborting."
+    exit 1
+  else
+    echo "Removing old zsh and oh-my-zsh files before installation."
+    rm -f "$HOME"/.zshrc* > /dev/null 2>&1
+    rm -rf "$HOME"/.oh-my-zsh > /dev/null 2>&1
+    rm -f "$HOME"~/.p10k.zsh > /dev/null 2>&1
+    
+    echo "Installing oh-my-zsh..."
+    git clone https://github.com/ohmyzsh/ohmyzsh.git "$HOME"/.oh-my-zsh > /dev/null 2>&1
 
-  echo "Installing powerlevel10k zsh theme..."
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$HOME"/.oh-my-zsh/custom/themes/powerlevel10k > /dev/null 2>&1
+    echo "Installing powerlevel10k zsh theme..."
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$HOME"/.oh-my-zsh/custom/themes/powerlevel10k > /dev/null 2>&1
+  fi
 }
 
 configure_dotfiles() {
@@ -75,6 +80,9 @@ configure_dotfiles() {
     chmod +x /usr/local/bin/colors > /dev/null 2>&1
     cp "$HOME"/.config/dotfiles/zsh/zshrc "$HOME"/.zshrc > /dev/null 2>&1
     cp "$HOME"/.config/dotfiles/zsh/p10k.zsh "$HOME"/.p10k.zsh > /dev/null 2>&1
+    
+    # iTerm2
+    defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.config/dotfiles/iterm2" > /dev/null 2>&1
   else
     git clone https://github.com/felipemeamaral/dotfiles.git "$HOME"/.config > /dev/null 2>&1
     ln -s "$HOME"/.config/git/gitconfig "$HOME"/.gitconfig > /dev/null 2>&1
@@ -84,6 +92,9 @@ configure_dotfiles() {
     chmod +x /usr/local/bin/colors > /dev/null 2>&1
     cp "$HOME"/.config/zsh/zshrc "$HOME"/.zshrc > /dev/null 2>&1
     cp "$HOME"/.config/zsh/p10k.zsh "$HOME"/.p10k.zsh > /dev/null 2>&1
+    
+    # iTerm2
+    defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.config/iterm2" > /dev/null 2>&1
     fi
     touch ~/.hushlogin > /dev/null 2>&1
 }
@@ -91,8 +102,6 @@ configure_dotfiles() {
 configure_environment() {
   if [ "$(uname)" == "Darwin" ]; then
     echo "Setting System Variables and Configurations..."
-    # iTerm2
-    defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/dotfiles/iterm2" > /dev/null 2>&1
 
     # Safari
     defaults write com.apple.Safari IncludeInternalDebugMenu -bool true > /dev/null 2>&1

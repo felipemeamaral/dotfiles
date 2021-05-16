@@ -54,7 +54,7 @@ install_omz() {
   rm -f "$HOME"~/.p10k.zsh > /dev/null 2>&1
   
   echo "Installing oh-my-zsh..."
-  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" > /dev/null 2>&1
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended > /dev/null 2>&1
 
   echo "Installing powerlevel10k zsh theme..."
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k > /dev/null 2>&1

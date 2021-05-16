@@ -106,10 +106,10 @@ export LANG=en_US.UTF-8
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias ls='exa'
-alias la='exa -a'
-alias ll='exa -l'
-alias lla='exa -la'
+#alias ls='exa'
+#alias la='exa -a'
+#alias ll='exa -l'
+#alias lla='exa -la'
 
 export NVM_DIR="$HOME/.nvm"
   [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm

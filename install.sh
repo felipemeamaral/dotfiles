@@ -62,23 +62,30 @@ install_omz() {
 
 configure_dotfiles() {
   echo "Configuring your Dotfiles..."
-if [ -d "$HOME"/.config ]; then
-	git clone https://github.com/felipemeamaral/dotfiles.git "$HOME"/.config/dotfiles > /dev/null 2>&1
-	ln -s "$HOME"/.config/dotfiles/git/gitconfig "$HOME"/.gitconfig > /dev/null 2>&1
-	ln -s "$HOME"/.config/dotfiles/git/HEAD "$HOME"/.git-template/HEAD > /dev/null 2>&1
-	ln -s "$HOME"/.config/dotfiles/colors/colors /usr/local/bin/colors && chmod +x /usr/local/bin/colors > /dev/null 2>&1
-	cp "$HOME"/.config/dotfiles/zsh/zshrc "$HOME"/.zshrc > /dev/null 2>&1
-	cp "$HOME"/.config/dotfiles/zsh/p10k.zsh "$HOME"/.p10k.zsh > /dev/null 2>&1
-else
-	git clone https://github.com/felipemeamaral/dotfiles.git "$HOME"/.config > /dev/null 2>&1
-	ln -s "$HOME"/.config/git/gitconfig "$HOME"/.gitconfig > /dev/null 2>&1
-	mkdir -p "$HOME"/.git-template > /dev/null 2>&1
-	ln -s "$HOME"/.config/git/HEAD "$HOME"/.git-template/HEAD > /dev/null 2>&1
-	ln -s "$HOME"/.config/colors/colors /usr/local/bin/colors && chmod +x /usr/local/bin/colors > /dev/null 2>&1
-	cp "$HOME"/.config/zsh/zshrc "$HOME"/.zshrc > /dev/null 2>&1
-	cp "$HOME"/.config/zsh/p10k.zsh "$HOME"/.p10k.zsh > /dev/null 2>&1
-  fi
-  touch ~/.hushlogin > /dev/null 2>&1
+  rm -f "$HOME"/.gitconfig* > /dev/null 2>&1
+  rm -rf "$HOME"/.git-template > /dev/null 2>&1
+  rm -f "$HOME"~/.p10k.zsh > /dev/null 2>&1
+
+  if [ -d "$HOME"/.config ]; then
+    git clone https://github.com/felipemeamaral/dotfiles.git "$HOME"/.config/dotfiles > /dev/null 2>&1
+    ln -s "$HOME"/.config/dotfiles/git/gitconfig "$HOME"/.gitconfig > /dev/null 2>&1
+    mkdir -p "$HOME"/.git-template > /dev/null 2>&1
+    ln -s "$HOME"/.config/dotfiles/git/HEAD "$HOME"/.git-template/HEAD > /dev/null 2>&1
+    cp "$HOME"/.config/dotfiles/colors/colors /usr/local/bin > /dev/null 2>&1
+    chmod +x /usr/local/bin/colors > /dev/null 2>&1
+    cp "$HOME"/.config/dotfiles/zsh/zshrc "$HOME"/.zshrc > /dev/null 2>&1
+    cp "$HOME"/.config/dotfiles/zsh/p10k.zsh "$HOME"/.p10k.zsh > /dev/null 2>&1
+  else
+    git clone https://github.com/felipemeamaral/dotfiles.git "$HOME"/.config > /dev/null 2>&1
+    ln -s "$HOME"/.config/git/gitconfig "$HOME"/.gitconfig > /dev/null 2>&1
+    mkdir -p "$HOME"/.git-template > /dev/null 2>&1
+    ln -s "$HOME"/.config/git/HEAD "$HOME"/.git-template/HEAD > /dev/null 2>&1
+    cp "$HOME"/.config/dotfiles/colors/colors /usr/local/bin > /dev/null 2>&1
+    chmod +x /usr/local/bin/colors > /dev/null 2>&1
+    cp "$HOME"/.config/zsh/zshrc "$HOME"/.zshrc > /dev/null 2>&1
+    cp "$HOME"/.config/zsh/p10k.zsh "$HOME"/.p10k.zsh > /dev/null 2>&1
+    fi
+    touch ~/.hushlogin > /dev/null 2>&1
 }
 
 configure_environment() {

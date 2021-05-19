@@ -41,7 +41,8 @@ install_brew() {
 install_nvm() {
   if [ ! "$(command -v nvm)" ]; then
     echo "Installing nvm..."
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash > /dev/null 2>&1
+    rm -rf "$HOME"/.nvm > /dev/null 2>&1
+    git clone https://github.com/nvm-sh/nvm.git "$HOME"/.nvm > /dev/null 2>&1
   else
     echo "You already have nvm installed on your system."
   fi

@@ -107,9 +107,10 @@ export LANG=en_US.UTF-8
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #alias ls='exa'
-#alias la='exa -a'
-#alias ll='exa -l'
-#alias lla='exa -la'
+#alias la='exa -a --icons'
+#alias ll='exa -l --icons'
+#alias lla='exa -la --icons'
+alias c='clear'
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm

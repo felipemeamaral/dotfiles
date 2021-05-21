@@ -106,7 +106,7 @@ export LANG=en_US.UTF-8
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-#alias ls='exa'
+#alias ls='exa --icons'
 #alias la='exa -a --icons'
 #alias ll='exa -l --icons'
 #alias lla='exa -la --icons'

@@ -15,13 +15,14 @@
 - Show battery percentage on Terminal
 - Show time delay for every command
 - You can add a lot more, like network usage, user name and hostname and so on.
+- To edit those setiings you have to edit the p10k file located on `~/.p10k.zsh`
 
-##### If you're running it on a Mac, it'll ask you if you want to install a few other bells and whistles.
+#### If you're running it on a Mac, it'll ask you if you want to install a few other bells and whistles.
 
-##### But they're just a plus, if you don't want to install them, just type `n` when it asks for permission.
+#### But they're just a plus, if you don't want to install them, just type `n` when it asks for permission.
 
-##### Hope that you like it.
+#### Hope that you like it.
 
-##### If by any chance you find any bug or have any idea for improvements, just open an issue and we'll discuss what's best the project.
+#### If by any chance you find any bug or have any idea for improvements, just open an issue and we'll discuss what's best the project.
 
-##### Made with ❤️ in 🇧🇷
+#### Made with ❤️ in 🇧🇷

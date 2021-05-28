@@ -19,7 +19,7 @@ install_brew() {
     brew tap homebrew/cask-versions > /dev/null 2>&1
     brew install --cask font-jetbrains-mono-nerd-font iterm2 > /dev/null 2>&1
 
-    read -p "Do you want to install your most used apps? (Discord, Firefox, VSCodium and so on.) [Y/n]" XCODE
+    read -p "Do you want to install your most used apps? (Discord, Firefox, VSCodium and so on.) [Y/n] " XCODE
     if [ "$XCODE" == "y" ] || [ "$XCODE" == "Y" ]; then
       echo "Installing your most used tools and apps, please wait."
       brew install aria2 exa htop wget > /dev/null 2>&1
@@ -39,43 +39,70 @@ install_brew() {
 }
 
 install_nvm() {
-  if [ ! "$(command -v brew)" ]; then
+  if [ ! "$(command -v nvm)" ]; then
     echo "Installing nvm..."
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash > /dev/null 2>&1
+    rm -rf "$HOME"/.nvm > /dev/null 2>&1
+    git clone https://github.com/nvm-sh/nvm.git "$HOME"/.nvm > /dev/null 2>&1
   else
     echo "You already have nvm installed on your system."
   fi
 }
 
 install_omz() {
-  echo "Removing old zsh and oh-my-zsh files before installation."
-  rm -f "$HOME"/.zshrc* > /dev/null 2>&1
-  rm -rf "$HOME"/.oh-my-zsh > /dev/null 2>&1
-  rm -f "$HOME"~/.p10k.zsh > /dev/null 2>&1
-  
-  echo "Installing oh-my-zsh..."
-  git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh > /dev/null 2>&1
+  if [ ! "$(command -v zsh)" ]; then
+    echo "You don't have zsh shell installed. Aborting."
+    exit 1
+  else
+    echo "Removing old zsh and oh-my-zsh files before installation."
+    rm -f "$HOME"/.zshrc* > /dev/null 2>&1
+    rm -rf "$HOME"/.oh-my-zsh > /dev/null 2>&1
+    rm -f "$HOME"~/.p10k.zsh > /dev/null 2>&1
+    
+    echo "Installing oh-my-zsh..."
+    git clone https://github.com/ohmyzsh/ohmyzsh.git "$HOME"/.oh-my-zsh > /dev/null 2>&1
 
-  echo "Installing powerlevel10k zsh theme..."
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k > /dev/null 2>&1
+    echo "Installing powerlevel10k zsh theme..."
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$HOME"/.oh-my-zsh/custom/themes/powerlevel10k > /dev/null 2>&1
+  fi
 }
 
 configure_dotfiles() {
   echo "Configuring your Dotfiles..."
-  git clone https://github.com/pulgalipe/dotfiles ~/.config/ > /dev/null 2>&1
-  ln -s ~/.config/git/gitconfig ~/.gitconfig > /dev/null 2>&1
-  ln -s ~/.config/git/HEAD ~/.git-template/HEAD > /dev/null 2>&1
-  ln -s ~/.config/colors/colors /usr/local/bin/colors && chmod +x /usr/local/bin/colors> /dev/null 2>&1
-  ln -s ~/.config/zsh/zshrc ~/.zshrc > /dev/null 2>&1
-  ln -s ~/.config/zsh/p10k.zsh ~/.p10k.zsh > /dev/null 2>&1
-  touch ~/.hushlogin > /dev/null 2>&1
+  rm -f "$HOME"/.gitconfig* > /dev/null 2>&1
+  rm -rf "$HOME"/.git-template > /dev/null 2>&1
+  rm -f "$HOME"~/.p10k.zsh > /dev/null 2>&1
+
+  if [ -d "$HOME"/.config ]; then
+    git clone https://github.com/felipemeamaral/dotfiles.git "$HOME"/.config/dotfiles > /dev/null 2>&1
+    ln -s "$HOME"/.config/dotfiles/git/gitconfig "$HOME"/.gitconfig > /dev/null 2>&1
+    mkdir -p "$HOME"/.git-template > /dev/null 2>&1
+    ln -s "$HOME"/.config/dotfiles/git/HEAD "$HOME"/.git-template/HEAD > /dev/null 2>&1
+    cp "$HOME"/.config/dotfiles/colors/colors /usr/local/bin > /dev/null 2>&1
+    chmod +x /usr/local/bin/colors > /dev/null 2>&1
+    cp "$HOME"/.config/dotfiles/zsh/zshrc "$HOME"/.zshrc > /dev/null 2>&1
+    cp "$HOME"/.config/dotfiles/zsh/p10k.zsh "$HOME"/.p10k.zsh > /dev/null 2>&1
+    
+    # iTerm2
+    defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.config/dotfiles/iterm2" > /dev/null 2>&1
+  else
+    git clone https://github.com/felipemeamaral/dotfiles.git "$HOME"/.config > /dev/null 2>&1
+    ln -s "$HOME"/.config/git/gitconfig "$HOME"/.gitconfig > /dev/null 2>&1
+    mkdir -p "$HOME"/.git-template > /dev/null 2>&1
+    ln -s "$HOME"/.config/git/HEAD "$HOME"/.git-template/HEAD > /dev/null 2>&1
+    cp "$HOME"/.config/dotfiles/colors/colors /usr/local/bin > /dev/null 2>&1
+    chmod +x /usr/local/bin/colors > /dev/null 2>&1
+    cp "$HOME"/.config/zsh/zshrc "$HOME"/.zshrc > /dev/null 2>&1
+    cp "$HOME"/.config/zsh/p10k.zsh "$HOME"/.p10k.zsh > /dev/null 2>&1
+    
+    # iTerm2
+    defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.config/iterm2" > /dev/null 2>&1
+    fi
+    touch ~/.hushlogin > /dev/null 2>&1
 }
 
 configure_environment() {
   if [ "$(uname)" == "Darwin" ]; then
     echo "Setting System Variables and Configurations..."
-    # iTerm2
-    defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/iterm2" > /dev/null 2>&1
 
     # Safari
     defaults write com.apple.Safari IncludeInternalDebugMenu -bool true > /dev/null 2>&1
@@ -123,7 +150,7 @@ configure_environment() {
 
 install_xcode() {
   if [ "$(uname)" == "Darwin" ]; then
-    read -p "Do you want to install Xcode? [Y/n]" XCODE
+    read -p "Do you want to install Xcode? [Y/n] " XCODE
     if [ "$XCODE" == "y" ] || [ "$XCODE" == "Y" ]; then
       brew install robotsandpencils/made/xcodes > /dev/null 2>&1
       xcodes --generate-completion-script > ~/.oh-my-zsh/plugins/_xcodes > /dev/null 2>&1
@@ -139,17 +166,19 @@ install_xcode() {
 
 install_vnc() {
   if [ "$(uname)" == "Darwin" ]; then
-    echo "Setting up VNC service and password."
+    echo "Setting up VNC service and password. It'd ask for you root password."
     read -p "Type the password you want to setup for VNC connection: " VNC
     while [ "$VNC" == "" ]; do
       read -p "You forgot to type a password. Type the password you want to setup for VNC connection: " VNC
     done
-    sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate > /dev/null 2>&1
-    sudo defaults write /Library/Preferences/com.apple.RemoteManagement VNCAlwaysStartOnConsole -bool true > /dev/null 2>&1
-    sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -configure -allowAccessFor -allUsers -privs -all > /dev/null 2>&1
-    sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -configure -clientopts -setvnclegacy -vnclegacy yes > /dev/null 2>&1
-    sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -configure -clientopts -setvncpw -vncpw "$VNC" > /dev/null 2>&1
-    sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -restart -agent -console > /dev/null 2>&1
+    echo "It'll define your VNC's password and restart VNC's services, so it'll take a while."
+    echo "Now it's time to enter your password to be able to do that."
+    #sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate > /dev/null 2>&1
+    #sudo defaults write /Library/Preferences/com.apple.RemoteManagement VNCAlwaysStartOnConsole -bool true > /dev/null 2>&1
+    #sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -configure -allowAccessFor -allUsers -privs -all > /dev/null 2>&1
+    #sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -configure -clientopts -setvnclegacy -vnclegacy yes > /dev/null 2>&1
+    #sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -configure -clientopts -setvncpw -vncpw "$VNC" > /dev/null 2>&1
+    #sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -restart -agent -console > /dev/null 2>&1
   fi
 }
 
@@ -159,7 +188,7 @@ sudo_commands() {
     sudo systemsetup -setremotelogin on > /dev/null 2>&1
   fi
 
-  read -p "Do you want to install an ads blocking hosts? [Y/n]" HOSTS
+  read -p "Do you want to install an ad blocking hosts file? [Y/n] " HOSTS
   if [ "$HOSTS" == "y" ] || [ "$HOSTS" == "Y" ]; then
     echo "Backing up hosts file and installing the adblocker hosts..."
     sudo mv /etc/hosts /etc/hosts.bak > /dev/null 2>&1
@@ -191,7 +220,7 @@ start() {
   configure_dotfiles
   configure_environment
   install_xcode
-  install_vnc
+  #install_vnc
   sudo_commands
 }
 

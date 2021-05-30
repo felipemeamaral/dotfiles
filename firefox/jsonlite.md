@@ -18,7 +18,7 @@ Background color: `#282c34`
 
 Info color: `#383e4b`
 
-Info hover color: `#4f5666; text-shadow: 1px 1px 3px #999`
+Info hover color: `#4f5666`
 
 Line numbers color: `#383e4b`
 

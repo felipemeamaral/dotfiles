@@ -6,6 +6,8 @@ You have open `about:config` and search for `devtools.jsonview.enabled` and set 
 
 Now you can use these configurations to set the theme like *One Dark Pro* on your JSON files.
 
+JSONLite link: https://addons.mozilla.org/en-US/firefox/addon/json-lite/
+
 ---
 
 Font: `16px "JetBrainsMono Nerd Font Mono", monospace`

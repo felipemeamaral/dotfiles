@@ -31,6 +31,7 @@ install_brew() {
     if [ "$(command -v curl)" ]; then
       curl -o /tmp/font.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/JetBrainsMono.zip > /dev/null 2>&1
       unzip /tmp/font.zip -d /tmp > /dev/null 2>&1
+      mkdir "$HOME"/.fonts > /dev/null 2>&1
       mv /tmp/*.ttf "$HOME"/.fonts > /dev/null 2>&1
       rm -rf /tmp/font.zip > /dev/null 2>&1
       fc-cache -f -v > /dev/null 2>&1
@@ -225,6 +226,6 @@ start() {
 }
 
 start
-echo "Job done. Restart your terminal and you're good to go."
+echo "Job done. Restart your terminal, don`t forget to set your Terminal font to "JetBrainsMono Nerd Font Mono" and you're good to go."
 
 } # this ensures the entire script is downloaded #
